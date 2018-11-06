@@ -8,10 +8,12 @@ setup:
 	$(V_COMMAND) pip install -r requirements.txt
 	$(V_COMMAND) pip install -e .
 
-
 clean:
 	rm -f crawlit/*.pyc
 	rm -rf $(VIRTUALENV)
 
 test:
 	$(V_COMMAND) python3 -m pytest -v
+
+run:
+	$(V_COMMAND) scrapy crawl -a url=${url} spider
