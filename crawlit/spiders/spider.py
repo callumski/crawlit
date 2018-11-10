@@ -1,6 +1,7 @@
 import scrapy
 from scrapy.spiders import Spider
 from urllib.parse import urlparse
+from ..items import CrawlitItem
 
 
 class CrawlitSpider(Spider):
@@ -16,4 +17,8 @@ class CrawlitSpider(Spider):
 
 
     def parse(self, response):
-        pass
+        item = CrawlitItem()
+        item['url'] = response.url
+        item['static_content'] = response.xpath('//*[contains(@src, ".")]').xpath('@src').extract()
+        item['links'] = []
+        yield item
