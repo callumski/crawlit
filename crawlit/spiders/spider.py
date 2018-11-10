@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 import scrapy
 from scrapy.spiders import Spider
 from urllib.parse import urlparse
 
 
-class SpiderSpider(Spider):
+class CrawlitSpider(Spider):
     name = 'spider'
 
     def start_requests(self):
@@ -17,4 +16,4 @@ class SpiderSpider(Spider):
 
 
     def parse(self, response):
-        print( response.url )
+        pass
