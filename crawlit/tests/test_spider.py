@@ -32,7 +32,7 @@ def mock_response_from_file(filename, url = None):
 def test_linkless_page():
     spider = CrawlitSpider()
     items = list(spider.parse(mock_response_from_file("linkless.html")))
-    assert len(items)[0]["links"] == 0
+    assert len(items[0]["links"]) == 0
 
 def test_oneimage_page():
     spider = CrawlitSpider()
