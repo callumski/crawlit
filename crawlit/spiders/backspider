@@ -1,0 +1,39 @@
+import scrapy
+from scrapy.spiders import Spider
+from urllib.parse import urlparse
+from ..items import CrawlitItem
+
+
+class SpiderSpider(Spider):
+
+    name = 'spider'
+    parsed_pages = []
+    allowed_domains = []
+
+    def start_requests(self):
+        url = getattr(self, 'url', None)
+        domain = urlparse(url).netloc
+        self.allowed_domains = [domain]
+
+        if url is not None:
+            yield scrapy.Request(url, self.parse)
+
+    def parse(self, response):
+        self.parsed_pages.append(response.url)
+        links = []
+        for url in response.xpath('//a/@href').extract():
+            links.append(url)
+            if urlparse(url).netloc in self.allowed_domains and url not in self.parsed_pages:
+                yield response.follow(url, callback=self.parse)
+
+        item = CrawlitItem()
+        item['url'] = response.url
+        item['static_content'] = response.xpath('//*[contains(@src, ".")]').xpath('@src').extract()
+        item['links'] = links
+        yield item
+
+item = CrawlitItem()
+        item['url'] = response.url
+        item['static_content'] = response.xpath('//*[contains(@src, ".")]').xpath('@src').extract()
+        item['links'] = []
+        yield item
