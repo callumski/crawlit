@@ -34,6 +34,11 @@ def test_linkless_page():
     items = spider.parse(mock_response_from_file("linkless.html"))
     assert len(list(items)[0]["links"]) == 1
 
-
+def test_onelink_page():
+    spider = CrawlitSpider()
+    items = spider.parse(mock_response_from_file("onelink.html"))
+    links = list(items)[0]["links"]
+    assert len(links) == 1
+    assert links[0] == "about_us.html"
 
 
