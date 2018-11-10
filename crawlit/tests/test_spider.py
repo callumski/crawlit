@@ -31,8 +31,18 @@ def mock_response_from_file(filename, url = None):
 
 def test_linkless_page():
     spider = CrawlitSpider()
-    items = spider.parse(mock_response_from_file("linkless.html"))
-    assert len(list(items)[0]["links"]) == 1
+    items = list(spider.parse(mock_response_from_file("linkless.html")))
+    assert len(items)[0]["links"] == 0
+
+def test_oneimage_page():
+    spider = CrawlitSpider()
+    items = list(spider.parse(mock_response_from_file("oneimage.html")))
+    links = items[0]["links"]
+    assert len(links) == 0
+    images = items[0]["static_content"]
+    assert len(images) == 1
+    assert images[0] == "monalisa.jpg"
+
 
 def test_onelink_page():
     spider = CrawlitSpider()
