@@ -22,8 +22,6 @@ def mock_response_from_file(filename, url = None):
     else:
         file_path = filename
 
-    print(file_path)
-
     with open(file_path, mode="r") as file:
         file_content = file.read()
 
@@ -34,6 +32,8 @@ def mock_response_from_file(filename, url = None):
 def test_linkless_page():
     spider = CrawlitSpider()
     items = spider.parse(mock_response_from_file("linkless.html"))
-    assert len(list(items)) == 1
+    assert len(list(items)[0]["links"]) == 1
+
+
 
 
