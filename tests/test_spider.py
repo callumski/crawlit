@@ -3,6 +3,7 @@ import os
 from scrapy.http import TextResponse, Request
 
 from ..spiders.spider import CrawlitSpider
+from ..items import CrawlitItem
 
 
 def mock_response_from_file(filename, url = None):
@@ -43,12 +44,21 @@ def test_oneimage_page():
     assert len(images) == 1
     assert images[0] == "monalisa.jpg"
 
-
-def test_onelink_page():
+def test_one_internal_link_page():
     spider = CrawlitSpider()
-    items = spider.parse(mock_response_from_file("onelink.html"))
-    links = list(items)[0]["links"]
+    spider.allowed_domains=["http://www.example.com"]
+    results = list(spider.parse(mock_response_from_file("oneinternal.html")))
+    print (results)
+    assert isinstance(results[0], Request)
+    assert isinstance(results[1], CrawlitItem)
+    links = results[1]["links"]
     assert len(links) == 1
     assert links[0] == "about_us.html"
 
-
+def test_one_external_link_page():
+    spider = CrawlitSpider()
+    results = list(spider.parse(mock_response_from_file("oneexternal.html")))
+    assert isinstance(results[0], CrawlitItem)
+    links = results[0]["links"]
+    assert len(links) == 1
+    assert links[0] == "http://www.example.com/interesting_page.html"
