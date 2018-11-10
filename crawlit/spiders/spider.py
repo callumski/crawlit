@@ -15,10 +15,14 @@ class CrawlitSpider(Spider):
         if url is not None:
             yield scrapy.Request(url, self.parse)
 
-
     def parse(self, response):
+        links = []
+        for url in response.xpath('//a/@href').extract():
+            links.append(url)
+
+
         item = CrawlitItem()
         item['url'] = response.url
         item['static_content'] = response.xpath('//*[contains(@src, ".")]').xpath('@src').extract()
-        item['links'] = []
+        item['links'] = links
         yield item
