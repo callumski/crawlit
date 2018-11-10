@@ -75,4 +75,13 @@ def test_html5_vid_page():
     assert "movie.mp4" in videos
     assert "movie.ogg" in videos
 
-#
+
+def test_onelocationhash_within_page():
+    spider = CrawlitSpider()
+    spider.allowed_domains=["http://www.example.com"]
+    results = list(spider.parse(mock_response_from_file("html/onelocationhash.html")))
+    assert len(results) == 1
+    assert isinstance(results[0], CrawlitItem)
+    assert len(results[0]["external_links"]) == 0
+    internal_links = results[0]["internal_links"]
+    assert internal_links == ["#about_us"]

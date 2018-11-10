@@ -44,4 +44,5 @@ class CrawlitSpider(Spider):
         yield item
 
         for url in internal_links:
-            yield response.follow(url, callback=self.parse)
+            if url[:1] != "#":
+                yield response.follow(url, callback=self.parse)
