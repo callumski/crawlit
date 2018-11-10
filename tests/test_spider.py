@@ -32,13 +32,13 @@ def mock_response_from_file(filename, url = None):
 
 def test_linkless_page():
     spider = CrawlitSpider()
-    items = list(spider.parse(mock_response_from_file("linkless.html")))
+    items = list(spider.parse(mock_response_from_file("html/linkless.html")))
     assert len(items[0]["internal_links"]) == 0
     assert len(items[0]["external_links"]) == 0
 
 def test_oneimage_page():
     spider = CrawlitSpider()
-    items = list(spider.parse(mock_response_from_file("oneimage.html")))
+    items = list(spider.parse(mock_response_from_file("html/oneimage.html")))
     assert len(items[0]["internal_links"]) == 0
     assert len(items[0]["external_links"]) == 0
     images = items[0]["static_content"]
@@ -48,19 +48,31 @@ def test_oneimage_page():
 def test_one_internal_link_page():
     spider = CrawlitSpider()
     spider.allowed_domains=["http://www.example.com"]
-    results = list(spider.parse(mock_response_from_file("oneinternal.html")))
+    results = list(spider.parse(mock_response_from_file("html/oneinternal.html")))
     assert isinstance(results[0], CrawlitItem)
     assert len(results[0]["external_links"]) == 0
     internal_links = results[0]["internal_links"]
     assert internal_links == ["about_us.html"]
     assert isinstance(results[1], Request)
 
-
 def test_one_external_link_page():
     spider = CrawlitSpider()
-    results = list(spider.parse(mock_response_from_file("oneexternal.html")))
+    spider.allowed_domains=["http://www.example.com"]
+    results = list(spider.parse(mock_response_from_file("html/oneexternal.html")))
     assert len(results) == 1
     assert isinstance(results[0], CrawlitItem)
     external_links = results[0]["external_links"]
     assert external_links == ["http://www.example.com/interesting_page.html"]
     assert len(results[0]["internal_links"]) == 0
+
+def test_html5_vid_page():
+    spider = CrawlitSpider()
+    items = list(spider.parse(mock_response_from_file("html/html5video.html")))
+    assert len(items[0]["internal_links"]) == 0
+    assert len(items[0]["external_links"]) == 0
+    videos = items[0]["static_content"]
+    assert len(videos) == 2
+    assert "movie.mp4" in videos
+    assert "movie.ogg" in videos
+
+#
