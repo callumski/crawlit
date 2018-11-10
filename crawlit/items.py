@@ -11,4 +11,5 @@ import scrapy
 class CrawlitItem(scrapy.Item):
     url = scrapy.Field()
     static_content = scrapy.Field()
-    links = scrapy.Field()
+    internal_links = scrapy.Field()
+    external_links = scrapy.Field()
