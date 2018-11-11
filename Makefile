@@ -17,5 +17,10 @@ clean:
 test:
 	$(V_COMMAND) python3 -m pytest --verbose
 
-run:
+run: crawl display
+
+crawl:
 	$(V_COMMAND) scrapy crawl -a url=${url} spider -o output/crawlit.${TIME_NOW}.json -t jsonlines
+
+display:
+	$(V_COMMAND) python3 crawlit/display.py
