@@ -3,9 +3,9 @@ V_PATH=$(VIRTUALENV)/bin
 V_COMMAND=source $(V_PATH)/activate;
 TIME_NOW=$(shell date -u '+%s')
 
-.PHONY: all run
+.PHONY: all clean setup test run crawl display
 
-all: clean setup test run crawl display
+all: clean setup test
 
 clean:
 	rm -f crawlit/*.pyc
@@ -23,11 +23,13 @@ test:
 	$(V_COMMAND) python3 -m pytest --verbose
 
 run:
-	CRAWLIT_JSON_FILE=output/crawlit.${TIME_NOW}.json	${MAKE} crawl  ${MAKE} display
-
+	CRAWLIT_JSON_FILE=output/crawlit.${TIME_NOW}.json ${MAKE} just-crawl  ${MAKE} display
 
 crawl:
-	${CRAWLIT_JSON_FILE:=output.json} ;	$(V_COMMAND) scrapy crawl -a url=${url} spider -o ${CRAWLIT_JSON_FILE} -t jsonlines
+	CRAWLIT_JSON_FILE=output/crawlit.${TIME_NOW}.json ${MAKE} just-crawl
+
+just-crawl:
+	$(V_COMMAND) scrapy crawl -a url=${url} spider -o ${CRAWLIT_JSON_FILE} -t jsonlines
 
 display:
 	$(V_COMMAND) python3 crawlit/display.py ${CRAWLIT_JSON_FILE} -ob
