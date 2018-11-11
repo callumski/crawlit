@@ -85,7 +85,7 @@ Each page is represented as a single CrawlitItem object. This allows for simple 
 The displaying of the output by rendering it to an HTML file with Jinja2 was chosen due to the simplicity of implementation. For a very large site the HTML file might grow too large, pagination could help with this, also the rendering could be avoided if output JSON was loaded using javascript. This was beyond scope of this project. The styling of the HTML is pretty barebones, again chosen due to ease of implementation.
 
 
-## Further possible extensions:
+## Possible extensions:
 
 The following extensions are possible:
 
