@@ -1,5 +1,4 @@
 scrapy
-pytest
-json2html
 jinja2
 json-lines
+pytest
