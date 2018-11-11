@@ -19,21 +19,21 @@
         <td>
             <ul>
                 {% for link in item.internal_links %}
-                <li><a href="{{ [item.url, link]|join|replace('//','/') }}">{{ link|truncate(100)|e }}</a></li>
+                <li><a href="{{ link[1] }}">{{ link[0]|truncate(60)|e }}</a></li>
                 {% endfor %}
             </ul>
         </td>
         <td>
             <ul>
                 {% for link in item.external_links %}
-                <li><a href="{{ link }}">{{ link|truncate(100)|e }}</a></li>
+                <li><a href="{{ link }}">{{ link|truncate(60)|e }}</a></li>
                 {% endfor %}
             </ul>
         </td>
         <td>
             <ul>
                 {% for link in item.static_content %}
-                <li><a href="{{ link }}">{{ link|truncate(100)|e }}</a></li>
+                <li><a href="{{ link }}">{{ link|truncate(60)|e }}</a></li>
                 {% endfor %}
             </ul>
         </td>

@@ -3,6 +3,7 @@ import json_lines
 import webbrowser
 import argparse
 from pathlib import Path
+from urllib.parse import urljoin
 
 THIS_DIR = str(Path(__file__).resolve().parent)
 
@@ -12,7 +13,13 @@ def get_items_from_json_file(file):
     with open(file, mode="r") as file:
         for item in json_lines.reader(file):
             items.append(item)
+
+    # We need to put the full URL in to be able to display it nicely.
+    for item in items:
+        item["internal_links"] = [(internal_url, urljoin(item["url"], internal_url)) for internal_url in item["internal_links"]]
+
     return items
+
 
 def get_html(input_file):
     j2_env = Environment(loader=FileSystemLoader(THIS_DIR),
