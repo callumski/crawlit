@@ -24,15 +24,19 @@ class CrawlitSpider(Spider):
         if url is not None:
             yield scrapy.Request(url, self.parse)
 
+    def remove_invalid_links(self, links):
+        return [url for url in links if url[:18] != "javascript:void(0)"]
+
     def parse(self, response):
         self.parsed_pages.append(response.url)
         internal_links = []
         external_links = []
 
-        urls = response.xpath('//a/@href').extract()
+        urls = self.remove_invalid_links(response.xpath('//a/@href').extract())
 
         for url in urls:
             netloc = urlparse(url).netloc
+            print("url: {}   netloc: {}".format(url, netloc))
             if netloc == '' or netloc in self.allowed_domains:
                 internal_links.append(url)
             else:

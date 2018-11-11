@@ -86,7 +86,6 @@ def test_html5_vid_page():
     assert "movie.mp4" in videos
     assert "movie.ogg" in videos
 
-
 def test_onelocationhash_within_page():
     spider = CrawlitSpider()
     spider.allowed_domains=["www.example.com"]
@@ -96,3 +95,8 @@ def test_onelocationhash_within_page():
     assert len(results[0]["external_links"]) == 0
     internal_links = results[0]["internal_links"]
     assert internal_links == ["#about_us"]
+
+def test_remove_invalid_javascript_call_links():
+    spider = CrawlitSpider()
+    links = spider.remove_invalid_links(["javascript:void(0)","javascript:void(0);"])
+    assert links == []
