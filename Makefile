@@ -1,7 +1,16 @@
 VIRTUALENV=env
 V_PATH=$(VIRTUALENV)/bin
 V_COMMAND=source $(V_PATH)/activate;
-TIME_NOW=$(shell date -u '+%d.%m.%y-%H.%M.%s')
+TIME_NOW=$(shell date -u '+%s')
+
+.PHONY: all run
+
+all: clean setup test run crawl display
+
+clean:
+	rm -f crawlit/*.pyc
+	rm -rf $(VIRTUALENV)
+	rm -rf output
 
 setup:
 	python3 -m venv $(VIRTUALENV)
@@ -10,17 +19,15 @@ setup:
 	$(V_COMMAND) pip install -e .
 	mkdir output
 
-clean:
-	rm -f crawlit/*.pyc
-	rm -rf $(VIRTUALENV)
-
 test:
 	$(V_COMMAND) python3 -m pytest --verbose
 
-run: crawl display
+run:
+	CRAWLIT_JSON_FILE=output/crawlit.${TIME_NOW}.json	${MAKE} crawl  ${MAKE} display
+
 
 crawl:
-	$(V_COMMAND) scrapy crawl -a url=${url} spider -o output/crawlit.${TIME_NOW}.json -t jsonlines
+	${CRAWLIT_JSON_FILE:=output.json} ;	$(V_COMMAND) scrapy crawl -a url=${url} spider -o ${CRAWLIT_JSON_FILE} -t jsonlines
 
 display:
-	$(V_COMMAND) python3 crawlit/display.py
+	$(V_COMMAND) python3 crawlit/display.py ${CRAWLIT_JSON_FILE} -ob
