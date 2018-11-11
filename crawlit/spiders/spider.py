@@ -14,6 +14,7 @@ class CrawlitSpider(Spider):
 
     name = 'spider'
     allowed_domains = []
+    parsed_pages = []
 
     def start_requests(self):
         url = getattr(self, 'url', None)
@@ -24,6 +25,7 @@ class CrawlitSpider(Spider):
             yield scrapy.Request(url, self.parse)
 
     def parse(self, response):
+        self.parsed_pages.append(response.url)
         internal_links = []
         external_links = []
 
@@ -44,5 +46,5 @@ class CrawlitSpider(Spider):
         yield item
 
         for url in internal_links:
-            if url[:1] != "#":
+            if url[:1] != "#" and url not in self.parsed_pages:
                 yield response.follow(url, callback=self.parse)
