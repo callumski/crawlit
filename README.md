@@ -23,7 +23,7 @@ Other required packages are downloaded during installation.
 To install **crawlit**:
 
 ```
-$ git clone --recursive https://github.com/callumski/crawlit.git
+$ git clone https://github.com/callumski/crawlit.git
 $ cd crawlit
 $ make setup
 ```
@@ -76,9 +76,14 @@ $ CRAWLIT_JSON_FILE=path.to/crawlit.NNNNNNNNNN.json make display
 ```
 
 ## Approach taken
-* scrapy used as why re-invent the wheel and limited time
-* render to HTML with jinja is functional but not great
-* output to JSON Lines is good as prevents broken json files 
+As it offers a fully featured framework for web-scraping [Scrapy](https://scrapy.org/) was chosen. This prevented having to reinvent the wheel and gave several important features out of the box (including auto-throttling, respecting ```robots.txt```, parallel downloads, xpath navigation, a variety of output formats).
+
+[JSON Lines](http://jsonlines.org/) was chosen as an output format as it will generate a valid JSON file, even if the crawler is stopped before completing the crawl of the website. It also means that the output can be parsed in a memory efficient way if necessary.
+
+Each page is represented as a single CrawlitItem object. This allows for simple atomic processing of each page, the list of internal links for each page would allow a graph of the pages to be easily generated from the list of items.
+
+The displaying of the output by rendering it to an HTML file with Jinja2 was chosen due to the simplicity of implemtation. For a very large site the HTML file might grow too large, pagination could help with this, also the rendering could be avoided if output JSON was loaded using javascript. This was beyind scope of this project. The styling of the HTML is pretty barebones, again chosen due to ease of implentation.
+
 
 ## Further possible extensions:
 
@@ -89,4 +94,3 @@ The following extensions are possible:
 * error checking for absence of schema on input domain
 * Add ability to recommence crawl that was stopped
 * Allow navigation between internal pages in displayed sitemap
-
