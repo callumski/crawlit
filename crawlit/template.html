@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../css/table.css" media="screen"/>
+</head>
+<body>
+<table class="table-title">
+    <tr>
+        <th>URL</th>
+        <th>Internal links</th>
+        <th>External links</th>
+        <th>Static Content</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td><a href="{{ item.url }}">{{ item.url|e }}</a></td>
+        <td>
+            <ul>
+                {% for link in item.internal_links %}
+                <li><a href="{{ [item.url, link]|join|replace('//','/') }}">{{ link|truncate(100)|e }}</a></li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td>
+            <ul>
+                {% for link in item.external_links %}
+                <li><a href="{{ link }}">{{ link|truncate(100)|e }}</a></li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td>
+            <ul>
+                {% for link in item.static_content %}
+                <li><a href="{{ link }}">{{ link|truncate(100)|e }}</a></li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
