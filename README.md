@@ -10,9 +10,9 @@ A simple web crawler built using [Scrapy](https://scrapy.org/).
 **crawlit** works in 2 stages:
 
 1. crawl
-	* **crawlit** crawls the given domain finding all internal an external links and static content, recording what it finds in a json-lines file
+	* **crawlit** crawls the given domain finding all internal an external links and static content, recording what it finds in a JSON Lines file
 2. display
-	* **crawlit** parses the json-lines file and renders it into a HTML file which can be viewed in the web browser of your choice
+	* **crawlit** parses the JSON Lines file and renders it into a HTML file which can be viewed in the web browser of your choice
 
 ## Requirements
 **crawlit** requires you have [Python3](https://www.python.org/downloads/) and [pip](https://pypi.org/project/pip/) installed.
@@ -40,7 +40,7 @@ $ make all
 ```
 Which will setup **crawlit** and run the tests.
 
-N.B. Running  ```make all``` also runs ```make clean``` which will remove the virtualenv, any python bytecode files and the ```./output``` folder.
+N.B. Running  ```make all``` also runs ```make clean``` which will remove the virtualenv, any Python bytecode files and the ```./output``` folder.
 
 ## Running the tests
 The tests are written using [pytest](https://pytest.org). To run them:
@@ -51,12 +51,12 @@ $ make test
 N.B. **crawlit** has been tested with Python 3 on OSX High Sierra.
 
 ## Usage
-To crawl the domain [www.example.com](http://www.example.com), have it rendered and then dsiplayed in your default web browser:
+To crawl the domain [www.example.com](http://www.example.com), have it rendered and then displayed in your default web browser:
 
 ```
 $ make run url=http://www.example.com
 ```
-N.B. The whole URL including scheme is necesary.
+N.B. The whole URL including scheme is necessary.
 
 
 
@@ -65,11 +65,11 @@ To crawl the domain [www.example.com](http://www.example.com):
 ```
 $ make crawl url=http://www.example.com
 ```
-N.B. The whole URL including scheme is necesary.
+N.B. The whole URL including scheme is necessary.
 
 This will write a [JSON Lines](http://jsonlines.org/) file to the ```./output``` folder. The file will be name ```crawlit.NNNNNNNNNN.json```. Where NNNNNNNNNN is the system time since Epoch in milliseconds.
 
-To render and display a given **crawlit** json file:
+To render and display a given **crawlit** JSON file:
 
 ```
 $ CRAWLIT_JSON_FILE=path.to/crawlit.NNNNNNNNNN.json make display
@@ -82,15 +82,15 @@ As it offers a fully featured framework for web-scraping [Scrapy](https://scrapy
 
 Each page is represented as a single CrawlitItem object. This allows for simple atomic processing of each page, the list of internal links for each page would allow a graph of the pages to be easily generated from the list of items.
 
-The displaying of the output by rendering it to an HTML file with Jinja2 was chosen due to the simplicity of implemtation. For a very large site the HTML file might grow too large, pagination could help with this, also the rendering could be avoided if output JSON was loaded using javascript. This was beyind scope of this project. The styling of the HTML is pretty barebones, again chosen due to ease of implentation.
+The displaying of the output by rendering it to an HTML file with Jinja2 was chosen due to the simplicity of implementation. For a very large site the HTML file might grow too large, pagination could help with this, also the rendering could be avoided if output JSON was loaded using javascript. This was beyond scope of this project. The styling of the HTML is pretty barebones, again chosen due to ease of implementation.
 
 
 ## Further possible extensions:
 
 The following extensions are possible:
 
-* more tests for display html rendering
-* better handling of non-html schemes
-* error checking for absence of schema on input domain
-* Add ability to recommence crawl that was stopped
-* Allow navigation between internal pages in displayed sitemap
+* Better handling of non-HTTP schemes. ```mailto:``` and ```tel:``` are not treated specifically
+* Tests for the HTML rendering
+* Error checking for the absence of schema on input domain
+* Add the ability to recommence a crawl that was stopped. This could be done by passing in the output from a previous crawl to populate the list of parsed pages.
+* In the HTML display, we could allow navigation between internal pages in sitemap. Currently the links are to the actual URL's but it might be nicer to be able to navigate the sitemap.
