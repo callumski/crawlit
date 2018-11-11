@@ -92,5 +92,9 @@ The following extensions are possible:
 * Better handling of non-HTTP schemes. ```mailto:``` and ```tel:``` are not treated specifically
 * Tests for the HTML rendering
 * Error checking for the absence of schema on input domain
-* Add the ability to recommence a crawl that was stopped. This could be done by passing in the output from a previous crawl to populate the list of parsed pages.
-* In the HTML display, we could allow navigation between internal pages in sitemap. Currently the links are to the actual URL's but it might be nicer to be able to navigate the sitemap.
+* Add the ability to recommence a crawl that was stopped. This could be done by passing in the output from a previous crawl to populate the list of parsed pages
+* In the HTML display, we could allow navigation between internal pages in sitemap. Currently the links are to the actual URL's but it might be nicer to be able to navigate the sitemap
+* Validation of functionality on other operating systems
+* Better data handling for very large websites. It is possible the current display functionality would be too resource intensive for very large domains
+* Giving it an end-to-end HTML UI to allow it to be deployed as a web application
+* Storing of output in a database
