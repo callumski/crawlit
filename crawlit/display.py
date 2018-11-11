@@ -7,15 +7,18 @@ from pathlib import Path
 THIS_DIR = str(Path(__file__).resolve().parent)
 
 
-def load_json_file(file):
+def get_items_from_json_file(file):
+    items = []
     with open(file, mode="r") as file:
-        yield next(json_lines.reader(file))
-
+        for item in json_lines.reader(file):
+            items.append(item)
+    return items
 
 def get_html(input_file):
     j2_env = Environment(loader=FileSystemLoader(THIS_DIR),
                          trim_blocks=True)
-    return j2_env.get_template("template.html").render(items=load_json_file(input_file))
+
+    return j2_env.get_template("template.html").render(items=get_items_from_json_file(input_file))
 
 
 if __name__ == '__main__':
@@ -35,8 +38,10 @@ if __name__ == '__main__':
 
     output_file = Path("{}/{}.html".format(input_file.parent, input_file.stem))
 
+    output_string = get_html(input_file)
+
     with open(output_file, mode="w") as file:
-        file.write(get_html(input_file))
+        file.write(output_string)
 
     if args.open_browser:
         webbrowser.open_new_tab("file://{}".format(str(output_file)))
