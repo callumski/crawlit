@@ -9,6 +9,8 @@ import scrapy
 
 
 class CrawlitItem(scrapy.Item):
+    """Class to hold results of CrawlitSpider parsing."""
+
     url = scrapy.Field()
     static_content = scrapy.Field()
     internal_links = scrapy.Field()

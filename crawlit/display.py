@@ -5,10 +5,23 @@ import argparse
 from pathlib import Path
 from urllib.parse import urljoin
 
+"""Parse and render a crawlit JSON file.
+
+Opens a crawlit JSON file and parses it, then renders it to HTML. Optionally 
+opens the resulting HTML page in a new tab of the default browser.
+"""
+
 THIS_DIR = str(Path(__file__).resolve().parent)
 
 
 def get_items_from_json_file(file):
+    """Open a JSON Lines file and return is at a list.
+
+    Opens the file and reads it into a list. Then loops through the list making
+    the internal links for each item be fully specifed URL's.
+    :param file: Filepath of a JSON Lines file of CrawlitItems
+    :return: A list of the items in the JSON Lines file
+    """
     items = []
     with open(file, mode="r") as file:
         for item in json_lines.reader(file):
@@ -24,7 +37,14 @@ def get_items_from_json_file(file):
     return items
 
 
-def get_html(input_file):
+def render_crawlit_items_to_html(input_file):
+    """Render a JSON LInes file of CrawlitItems to HTML.
+
+    Loads a JSON Lines file of CrawlitItems and then passes it to a Jinja2
+    template for rendering. Return the rendered HTML.
+    :param input_file: Filepath of a JSON Lines file of CrawlitItems
+    :return: string of rendered HTML
+    """
     j2_env = Environment(loader=FileSystemLoader(THIS_DIR),
                          trim_blocks=True)
 
@@ -51,7 +71,7 @@ if __name__ == '__main__':
 
     output_file = Path("{}/{}.html".format(input_file.parent, input_file.stem))
 
-    output_string = get_html(input_file)
+    output_string = render_crawlit_items_to_html(input_file)
 
     with open(output_file, mode="w") as file:
         file.write(output_string)
