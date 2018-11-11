@@ -6,10 +6,12 @@ from ..items import CrawlitItem
 
 class CrawlitSpider(Spider):
     """
-    Simple web crawler, limited to one domain. Given a starting URL it will visit all pages within the domain, but not
+    Simple web crawler, limited to one domain. Given a starting URL it will
+    visit all pages within the domain, but not
     follow the links to external sites such as Google or Twitter.
 
-    It collects a list of items with url, internal links, external links and static content.
+    It collects a list of items with url, internal links, external links and
+    static content.
     """
 
     name = 'spider'
@@ -17,6 +19,10 @@ class CrawlitSpider(Spider):
     parsed_pages = []
 
     def start_requests(self):
+        """
+
+        :return:
+        """
         url = getattr(self, 'url', None)
         domain = urlparse(url).netloc
         self.allowed_domains = [domain]
@@ -44,7 +50,8 @@ class CrawlitSpider(Spider):
 
         item = CrawlitItem()
         item['url'] = response.url
-        item['static_content'] = response.xpath('//*[contains(@src, ".")]').xpath('@src').extract()
+        item['static_content'] = response.xpath(
+            '//*[contains(@src, ".")]').xpath('@src').extract()
         item['internal_links'] = internal_links
         item['external_links'] = external_links
         yield item
