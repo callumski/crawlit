@@ -88,13 +88,5 @@ The following extensions are possible:
 * better handling of non-html schemes
 * error checking for absence of schema on input domain
 * Add ability to recommence crawl that was stopped
+* Allow navigation between internal pages in displayed sitemap
 
-
-## Notes
-
-
-* approach taken
-Reasoning and describe any trade offs
-* further possible directions
-Explanation of what could be done with more time
- - better display
