@@ -33,6 +33,7 @@ def mock_response_from_file(filename, url = None):
 def test_linkless_page():
     spider = CrawlitSpider()
     items = list(spider.parse(mock_response_from_file("html/linkless.html")))
+    assert len(items) == 1
     assert len(items[0]["internal_links"]) == 0
     assert len(items[0]["external_links"]) == 0
 
