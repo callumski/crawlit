@@ -48,7 +48,7 @@ def test_oneimage_page():
 
 def test_one_internal_link_page():
     spider = CrawlitSpider()
-    spider.allowed_domains=["http://www.example.com"]
+    spider.allowed_domains=["www.example.com"]
     results = list(spider.parse(mock_response_from_file("html/oneinternal.html")))
     assert isinstance(results[0], CrawlitItem)
     assert len(results[0]["external_links"]) == 0
@@ -56,14 +56,24 @@ def test_one_internal_link_page():
     assert internal_links == ["about_us.html"]
     assert isinstance(results[1], Request)
 
+def test_one_internal_link_full_url_page():
+    spider = CrawlitSpider()
+    spider.allowed_domains=["www.example.com"]
+    results = list(spider.parse(mock_response_from_file("html/alternative_one_internal.html")))
+    assert isinstance(results[0], CrawlitItem)
+    assert len(results[0]["external_links"]) == 0
+    internal_links = results[0]["internal_links"]
+    assert internal_links == ["http://www.example.com/about_us.html"]
+    assert isinstance(results[1], Request)
+
 def test_one_external_link_page():
     spider = CrawlitSpider()
-    spider.allowed_domains=["http://www.example.com"]
+    spider.allowed_domains=["www.example.com"]
     results = list(spider.parse(mock_response_from_file("html/oneexternal.html")))
     assert len(results) == 1
     assert isinstance(results[0], CrawlitItem)
     external_links = results[0]["external_links"]
-    assert external_links == ["http://www.example.com/interesting_page.html"]
+    assert external_links == ["http://www.interesting.com/interesting_page.html"]
     assert len(results[0]["internal_links"]) == 0
 
 def test_html5_vid_page():
@@ -79,7 +89,7 @@ def test_html5_vid_page():
 
 def test_onelocationhash_within_page():
     spider = CrawlitSpider()
-    spider.allowed_domains=["http://www.example.com"]
+    spider.allowed_domains=["www.example.com"]
     results = list(spider.parse(mock_response_from_file("html/onelocationhash.html")))
     assert len(results) == 1
     assert isinstance(results[0], CrawlitItem)
