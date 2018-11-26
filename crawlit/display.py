@@ -24,8 +24,7 @@ def get_items_from_json_file(file):
     """
     items = []
     with open(file, mode="r") as file:
-        for item in json_lines.reader(file):
-            items.append(item)
+        items = [item for item in json_lines.reader(file)]
 
     # We need to put the full URL in to be able to display it nicely.
     for item in items:
