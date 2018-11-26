@@ -22,7 +22,7 @@ def get_items_from_json_file(file):
     :param file: Filepath of a JSON Lines file of CrawlitItems
     :return: A list of the items in the JSON Lines file
     """
-    items = []
+
     with open(file, mode="r") as file:
         items = [item for item in json_lines.reader(file)]
 
